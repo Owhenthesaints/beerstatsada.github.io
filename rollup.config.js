@@ -82,5 +82,9 @@ export default [
   build('misc'),
   build('theme', { src: `${SRC_DEFAULT}/modules`, outputName: 'Theme' }),
   build('app', { src: SRC_PWA, jekyll: true }),
-  build('sw', { src: SRC_PWA, jekyll: true })
+  build('sw', { src: SRC_PWA, jekyll: true }),
+  {
+    ...build('ploting_all_plots'),
+    exclude: ['plotly.js', "plotly.js-dist", "plotly.min.js"]
+  }
 ];

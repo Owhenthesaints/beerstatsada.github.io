@@ -25,7 +25,11 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.3"
+    "bootstrap": "^5.3.3",
+    "papaparse": "^5.4.1",
+    "plotly.js": "^2.35.2",
+    "plotly.js-dist": "^2.35.2",
+    "plotly.js-dist-min": "^2.35.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -35,6 +39,7 @@
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@semantic-release/changelog": "^6.0.3",
@@ -44,10 +49,12 @@
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "husky": "^9.1.7",
     "purgecss": "^7.0.2",
-    "rollup": "^4.27.4",
+    "rollup": "^4.28.1",
     "semantic-release": "^24.2.0",
     "stylelint": "^16.10.0",
-    "stylelint-config-standard-scss": "^13.1.0"
+    "stylelint-config-standard-scss": "^13.1.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4"
   },
   "prettier": {
     "trailingComma": "none"
@@ -139,5 +146,10 @@
       ],
       "@semantic-release/github"
     ]
-  }
+  },
+  "main": "purgecss.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": []
 }

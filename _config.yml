@@ -14,7 +14,7 @@ timezone: Europe/Paris
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Chirpy # the main title
+title: pADA-wan # the main title
 
 tagline: A text-focused Jekyll theme # it will display as the subtitle
 
@@ -26,7 +26,7 @@ description: >- # used by seo meta and the atom feed
 url: "https://owhenthesaints.github.io"
 
 github:
-  username: github_username # change to your GitHub username
+  username: Owhenthesaints # change to your GitHub username
 
 twitter:
   username: twitter_username # change to your Twitter username
@@ -98,7 +98,7 @@ theme_mode: light # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: 'assets/img/favicons/group-icon.png'
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
