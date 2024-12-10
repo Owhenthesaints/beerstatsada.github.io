@@ -1,8 +1,9 @@
 import babel from '@rollup/plugin-babel';
 import terser from '@rollup/plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 import fs from 'fs';
 import pkg from './package.json';
+import dsv from '@rollup/plugin-dsv';
 
 const SRC_DEFAULT = '_javascript';
 const SRC_PWA = `${SRC_DEFAULT}/pwa`;
@@ -17,7 +18,7 @@ const isProd = process.env.BUILD === 'production';
 let hasWatched = false;
 
 function cleanup() {
-  fs.rmSync(DIST, { recursive: true, force: true });
+  fs.rmSync(DIST, {recursive: true, force: true});
   console.log(`> Directory "${DIST}" has been cleaned.`);
 }
 
@@ -36,7 +37,7 @@ function insertFrontmatter() {
 
 function build(
   filename,
-  { src = SRC_DEFAULT, jekyll = false, outputName = null } = {}
+  {src = SRC_DEFAULT, jekyll = false, outputName = null} = {}
 ) {
   const input = `${src}/${filename}.js`;
   const shouldWatch = hasWatched ? false : true;
@@ -50,18 +51,18 @@ function build(
     output: {
       file: `${DIST}/${filename}.min.js`,
       format: 'iife',
-      ...(outputName !== null && { name: outputName }),
+      ...(outputName !== null && {name: outputName}),
       banner,
       sourcemap: !isProd && !jekyll
     },
-    ...(shouldWatch && { watch: { include: `${SRC_DEFAULT}/**/*.js` } }),
+    ...(shouldWatch && {watch: {include: `${SRC_DEFAULT}/**/*.js`}}),
     plugins: [
       babel({
         babelHelpers: 'bundled',
         presets: ['@babel/env'],
         plugins: [
           '@babel/plugin-transform-class-properties',
-          '@babel/plugin-transform-private-methods'
+          '@babel/plugin-transform-private-methods',
         ]
       }),
       nodeResolve(),
@@ -80,11 +81,19 @@ export default [
   build('page'),
   build('post'),
   build('misc'),
-  build('theme', { src: `${SRC_DEFAULT}/modules`, outputName: 'Theme' }),
-  build('app', { src: SRC_PWA, jekyll: true }),
-  build('sw', { src: SRC_PWA, jekyll: true }),
+  build('theme', {src: `${SRC_DEFAULT}/modules`, outputName: 'Theme'}),
+  build('app', {src: SRC_PWA, jekyll: true}),
+  build('sw', {src: SRC_PWA, jekyll: true}),
   {
     ...build('ploting_all_plots'),
+    plugins: [
+      dsv(),
+      babel({
+        babelHelpers: 'bundled',
+        presets: ['@babel/preset-env'],
+        exclude: 'node_modules/**'
+      }),
+    ],
     exclude: ['plotly.js', "plotly.js-dist", "plotly.min.js"]
   }
 ];

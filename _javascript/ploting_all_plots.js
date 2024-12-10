@@ -1,12 +1,13 @@
+import csvData from '../data/mean_grade_per_type_1.csv'
 
 
-const trace1 = {
-  x: [1, 2, 3, 4],
-  y: [10, 15, 13, 17],
-  type: 'scatter'
-};
-
-const data = [trace1];
+let data = [{
+  type : 'choropleth',
+  locationmode: 'country names',
+  locations: csvData.map(row => row['Origin']),
+  z: csvData.map(row => row['Mean_grade']),
+  autocolorscale: true
+}]
 
 // Layout
 const layout = {
