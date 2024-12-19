@@ -1,7 +1,6 @@
 import csvData from '../../data/origin_stats.csv';
+
 export function plotMap() {
-
-
   /** @type {CsvDataRow[]}*/
   const typedCsvData = csvData;
 
