@@ -1,5 +1,5 @@
-import time_series_rb from '../../data/seasonal_trends_sample_RB.csv';
-import time_series_ba from '../../data/seasonal_trends_sample_BA.csv';
+import time_series_rb from '../../data/seasonal_trends_sample_RB_ra.csv';
+import time_series_ba from '../../data/seasonal_trends_sample_BA_ra.csv';
 
 function populateDatasetSelector() {
   let selector = document.getElementById('time_series_dataset_selector');
@@ -11,15 +11,38 @@ function populateDatasetSelector() {
   option = document.createElement('option');
   option.text = 'Rate Beer';
   selector.add(option);
-  return selector
+  return selector;
 }
 
+function populateBeerTypeSelector(dataset_used) {
+  // remove all elements
+  while (document.getElementById('time_series_type_selector').length > 0) {
+    document.getElementById('time_series_type_selector').remove(0);
+  }
+
+  let selector = document.getElementById('time_series_type_selector');
+  let dataset = (dataset_used === 'Beer Advocate') ? time_series_ba : time_series_rb;
+  const beer_types = [...new Set(dataset.filter((_, index) => index % 2 === 0).map(row => row['style']))];
+  beer_types.sort();
+  for (let beer_type of beer_types) {
+    let option = document.createElement('option');
+    option.text = beer_type;
+    selector.add(option);
+  }
+  return selector;
+}
+
+
 export function plotTimeSeries() {
-  let selector = populateDatasetSelector();
+  let selector_dataset = populateDatasetSelector();
+  let dataset_used = 'Beer Advocate';
+  let index_to_plot = 0;
+  let selector_style = populateBeerTypeSelector(dataset_used);
 
   // function to plot
-  function plot(used_dataset) {
-    let dataset = (used_dataset === 'Beer Advocate') ? time_series_ba : time_series_rb;
+  function plot() {
+    let dataset = (dataset_used === 'Beer Advocate') ? time_series_ba : time_series_rb;
+
     // set x
     let x_ba = Object.keys(dataset[0]).slice(1);
     const year = 2024;
@@ -28,17 +51,28 @@ export function plotTimeSeries() {
     // setup y
     let y_ba = []
     for (let key of x_ba) {
-      y_ba.push(dataset[0][key]);
+      y_ba.push(dataset[index_to_plot * 2][key]);
+    }
+    let y_ba_ra = []
+    for (let key of x_ba) {
+      y_ba_ra.push(dataset[index_to_plot * 2 + 1][key]);
     }
 
     let trace_ba = {
       x: x_iso_ba,
       y: y_ba,
       mode: 'lines',
-      name: 'BA'
+      name: 'Beer Advocate'
     };
 
-    let data = [trace_ba];
+    let trace_ba_ra = {
+      x: x_iso_ba,
+      y: y_ba_ra,
+      mode: 'lines',
+      name: 'Beer Advocate with rolling average'
+    };
+
+    let data = [trace_ba, trace_ba_ra];
 
     let layout = {
       title: 'Time series of BA',
@@ -55,11 +89,21 @@ export function plotTimeSeries() {
     Plotly.newPlot('time_series_ratings', data, layout);
   }
 
-  function selectorCallback() {
-    let selected = selector.options[selector.selectedIndex].value;
-    plot(selected);
+  function selectorCallbackDataset() {
+    dataset_used = selector_dataset.options[selector_dataset.selectedIndex].value;
+    populateBeerTypeSelector(dataset_used);
+    index_to_plot = 0;
+    selector_style.selectedIndex = 0;
+    plot();
   }
-  selector.addEventListener('change', selectorCallback);
 
-  plot('Beer Advocate');
+  function selectorCallbackStyle() {
+    index_to_plot = selector_style.selectedIndex;
+    plot();
+  }
+
+  selector_dataset.addEventListener('change', selectorCallbackDataset);
+  selector_style.addEventListener('change', selectorCallbackStyle)
+
+  plot();
 }
