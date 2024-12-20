@@ -70,6 +70,9 @@ export function plotBoxPlot() {
         title: 'Country',
         tickangle: 45,
       },
+      yaxis: {
+        title: 'Price per litter(€/L)',
+      }
     });
   }
   function dropmenuCallback(event) {
