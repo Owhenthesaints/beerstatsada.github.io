@@ -9,9 +9,8 @@ export function plotMaps() {
     locationmode: 'country names',
     locations: typedCsvData.map(row => row['country']),
     z: typedCsvData.map(row => row['consumption_per_inhabitant_L_per_year_wikipedia']),
-    autocolorscale: true,
     visible: true,
-    colorscale: 'RdBu'
+    colorscale: 'YlOrRd',
   }
 
   let population = {

@@ -10,6 +10,7 @@ import {plotBoxPlot} from "./ploting/box_plots";
 import {plotTimeSeries} from "./ploting/time_series";
 import {RandomNameHandler} from "./ploting/random_name";
 import {barPlot} from "./ploting/bar_plot";
+import {mapsPrice} from "./ploting/maps_price";
 
 
 //plotMap();
@@ -23,3 +24,5 @@ plotTimeSeries();
 RandomNameHandler();
 
 barPlot();
+
+mapsPrice();
