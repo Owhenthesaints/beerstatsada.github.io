@@ -28,7 +28,7 @@ export function plotMaps() {
     type: 'choropleth',
     locationmode: 'country names',
     locations: typedCsvData.map(row => row['country']),
-    z: typedCsvData.map(row => Math.log(row['log_num_users'])),
+    z: typedCsvData.map(row => row['log_num_users']),
     visible: false,
     colorscale: 'YlOrRd',
     title: 'Number of users (log scale)'
@@ -58,7 +58,10 @@ export function plotMaps() {
     locations: typedCsvData.map(row => row['country']),
     z: typedCsvData.map(row => row['normalized_number_breweries']),
     visible: false,
-    colorscale: 'YlOrRd'
+    colorscale: 'YlOrRd',
+    colorbar: {
+      title: 'L⁻¹*person⁻¹'
+    }
   }
 
   let percentage_reviewers_per_countries = {
@@ -109,7 +112,7 @@ export function plotMaps() {
         {
           method: 'restyle',
           args: ['visible', [false, false, false, false, false, true, false]],
-          label: 'Normalized number of breweries'
+          label: 'number of breweries per person per litre'
         },
         {
           method: 'restyle',
