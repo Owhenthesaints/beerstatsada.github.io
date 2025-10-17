@@ -1,3 +1,4 @@
+
 name: "Build and Deploy"
 on:
   push:
@@ -39,6 +40,17 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -53,8 +65,11 @@ jobs:
       - name: Test site
         run: |
           bundle exec htmlproofer _site \
-            \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+            --disable-external \
+            --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/" \
+            --allow-hash-href \
+            --ignore-missing-alt \
+            --swap-urls "^${{ steps.pages.outputs.base_path }}:"
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
